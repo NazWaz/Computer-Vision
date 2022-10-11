@@ -24,3 +24,5 @@ cap.release()
 # Destroy all the windows
 cv2.destroyAllWindows()
 # %%
+
+# %%
