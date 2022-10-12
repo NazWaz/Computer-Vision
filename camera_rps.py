@@ -3,6 +3,7 @@ import random # imports random module
 import cv2
 from keras.models import load_model
 import numpy as np
+import time
 
 class Game:
     def __init__(self, move_list): # intialises parameters
@@ -14,8 +15,9 @@ class Game:
     def get_computer_choice(self): # defines the computer choice function, passing only self as the argument
         self.computer_choice = random.choice(list(self.move_list.values())) # chooses random values from a dictionary converted into a list
         print(self.computer_choice)
+
     def get_user_choice(self): # defines the user choice function, passing only self as the argument
-        
+        start = time.time()
         model = load_model('keras_model.h5')
         cap = cv2.VideoCapture(0)
         data = np.ndarray(shape=(1, 224, 224, 3), dtype=np.float32)
@@ -32,15 +34,19 @@ class Game:
             print(prediction)
             if cv2.waitKey(1) & 0xFF == ord('q'):
                 break
-            elif np.argmax(prediction) == 0:
+            elif np.argmax(prediction) == 0 and time.time() - start == 30:
                 self.user_choice = "Rock"
-            elif np.argmax(prediction) == 1:
+                break
+            elif np.argmax(prediction) == 1 and time.time() - start == 30:
                 self.user_choice = "Scissors"
-            elif np.argmax(prediction) == 2:
+                break
+            elif np.argmax(prediction) == 2 and time.time() - start == 30:
                 self.user_choice = "Paper" 
-            elif np.argmax(prediction) == 3:
-                self.user_choice = "Nothing"
-            print(self.user_choice)   
+                break
+            elif np.argmax(prediction) == 3 and time.time() - start == 30:
+                self.user_choice = "Nothing"  
+                break
+            print(f"You chose {self.user_choice}.") 
              
         # After the loop release the cap object
         cap.release()
