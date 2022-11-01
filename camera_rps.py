@@ -6,9 +6,9 @@ import numpy as np
 import time
 
 class Game:
-    def __init__(self, move_list): # intialises parameters
+    def __init__(self): # intialises parameters
 
-        self.move_list = move_list # move list is given as an argument as a dictionary later
+        self.move_list = {"0": "Rock", "1": "Scissors", "2": "Paper"} # move list is given as an argument as a dictionary later
         self.computer_choice = "" # computer choice is given an empty string value
         self.user_choice = ""   # user choice is given an empty string value
 
@@ -17,36 +17,34 @@ class Game:
         print(self.computer_choice)
 
     def get_user_choice(self): # defines the user choice function, passing only self as the argument
-        start = time.time()
+        
         model = load_model('keras_model.h5')
         cap = cv2.VideoCapture(0)
         data = np.ndarray(shape=(1, 224, 224, 3), dtype=np.float32)
-
-        while True: 
+        start = time.time()
+        end = time.time() + 10
+        while end > time.time(): 
             ret, frame = cap.read()
             resized_frame = cv2.resize(frame, (224, 224), interpolation = cv2.INTER_AREA)
             image_np = np.array(resized_frame)
             normalized_image = (image_np.astype(np.float32) / 127.0) - 1 # Normalize the image
             data[0] = normalized_image
             prediction = model.predict(data)
-            cv2.imshow('frame', frame)
+            cv2.imshow('User Move', frame)
             # Press q to close the window
             print(prediction)
             if cv2.waitKey(1) & 0xFF == ord('q'):
                 break
-            elif np.argmax(prediction) == 0 and time.time() - start == 30:
+        
+        if np.argmax(prediction) == 0:
                 self.user_choice = "Rock"
-                break
-            elif np.argmax(prediction) == 1 and time.time() - start == 30:
+        elif np.argmax(prediction) == 1:
                 self.user_choice = "Scissors"
-                break
-            elif np.argmax(prediction) == 2 and time.time() - start == 30:
+        elif np.argmax(prediction) == 2:
                 self.user_choice = "Paper" 
-                break
-            elif np.argmax(prediction) == 3 and time.time() - start == 30:
+        elif np.argmax(prediction) == 3:
                 self.user_choice = "Nothing"  
-                break
-            print(f"You chose {self.user_choice}.") 
+        print(f"You chose {self.user_choice}.") 
              
         # After the loop release the cap object
         cap.release()
@@ -64,7 +62,7 @@ class Game:
             print("You have lost!")
 # %%
 def play():
-    game = Game(move_list = {"0": "Rock", "1": "Scissors", "2": "Paper"}) # creates the game instance using the Game class
+    game = Game() # creates the game instance using the Game class
     while True:
         game.get_computer_choice() # calls the computer choice function
         game.get_user_choice() # calls the user choice function
