@@ -3,15 +3,18 @@ import cv2 #imports opencv-python library
 from keras.models import load_model
 import numpy as np #imports numpy library and renames it np
 import time #imports time module
-start = time.time()
+
 
 model = load_model('keras_model.h5')
 cap = cv2.VideoCapture(0) #captures the webcam video frame by frame and set as cap object - 0 is the first camera
 data = np.ndarray(shape=(1, 224, 224, 3), dtype=np.float32)
 
-while True: 
+start = time.time()
+end = time.time() + 5
+while time.time() < end: 
     ret, frame = cap.read() #reads the video from the camera frame by frame
-    resized_frame = cv2.resize(frame, (224, 224), interpolation = cv2.INTER_AREA)
+    resized_frame = cv2.resize(frame, (224, 224), interpolation = cv2.INTER_AREA) #resizes image(input image, size, interpolation)
+    #resampling using pixel area relation
     image_np = np.array(resized_frame)
     normalized_image = (image_np.astype(np.float32) / 127.0) - 1 # Normalize the image
     data[0] = normalized_image
