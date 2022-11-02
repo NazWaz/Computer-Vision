@@ -24,7 +24,7 @@ class Game:
         cap = cv2.VideoCapture(0)
         data = np.ndarray(shape=(1, 224, 224, 3), dtype=np.float32)
         start = time.time()
-        end = time.time() + 10
+        end = time.time() + 5
 
         while end > time.time(): # loop continues for 10 seconds
             ret, frame = cap.read() # reads the video from the camera frame by frame
