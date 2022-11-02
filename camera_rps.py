@@ -11,8 +11,8 @@ class Game:
         self.move_list = {"0": "Rock", "1": "Scissors", "2": "Paper"} # move list is given as an argument as a dictionary later
         self.computer_choice = "" # computer choice is given an empty string value
         self.user_choice = ""   # user choice is given an empty string value
-        self.user_wins = ""
-        self.computer_wins = ""
+        self.user_wins = 0 # user wins is given a zero interger value
+        self.computer_wins = 0 # computer wins is given a zero integer value
 
     def get_computer_choice(self): # defines the computer choice function, passing only self as the argument
         self.computer_choice = random.choice(list(self.move_list.values())) # chooses random values from a dictionary converted into a list
@@ -57,18 +57,28 @@ class Game:
         or user_choice == self.move_list["1"] and computer_choice == self.move_list["2"] 
         or user_choice == self.move_list["2"] and computer_choice == self.move_list["0"]): # condition where the user's choice beats the computer's choice
             print("You have won!")
+            self.user_wins += 1 # adds 1 to user's score
         elif user_choice == computer_choice: # condition where the user's choice is equal to the computer's choice
             print("You have drawn!")
         else: 
+            self.computer_wins += 1 # adds 1 to computer's score
             print("You have lost!")
+        print(f"The score is {self.user_wins} - {self.computer_wins}.") # prints the game's score
 # %%
 def play():
     game = Game() # creates the game instance using the Game class
     while True:
-        game.get_computer_choice() # calls the computer choice function
-        game.get_user_choice() # calls the user choice function
-        game.get_winner(game.computer_choice, game.user_choice) # calls the winner function, using the game instances' user and computer choices as arguments
-        break
+        if game.user_wins < 3 and game.computer_wins < 3:
+            game.get_computer_choice() # calls the computer choice function
+            game.get_user_choice() # calls the user choice function
+            game.get_winner(game.computer_choice, game.user_choice) # calls the winner function, using the game instances' user and computer choices as arguments
+        else:    
+            break
+    if game.user_wins == 3:    
+        print("You have won the game!")
+    elif game.computer_wins == 3:
+        print("You have lost the game!")
+
 # %%
 play()
 # %%
