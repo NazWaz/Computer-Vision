@@ -11,7 +11,7 @@ data = np.ndarray(shape=(1, 224, 224, 3), dtype=np.float32)
 
 start = time.time()
 end = time.time() + 5
-while time.time() < end: 
+while True: 
     ret, frame = cap.read() #reads the video from the camera frame by frame
     resized_frame = cv2.resize(frame, (224, 224), interpolation = cv2.INTER_AREA) #resizes image(input image, size, interpolation)
     #resampling using pixel area relation
@@ -19,6 +19,7 @@ while time.time() < end:
     normalized_image = (image_np.astype(np.float32) / 127.0) - 1 # Normalize the image
     data[0] = normalized_image
     prediction = model.predict(data)
+    cv2.putText(frame, "3", (100,150), cv2.FONT_HERSHEY_DUPLEX, 4, (255,0,0), 3)
     cv2.imshow('frame', frame) #displays video in a window called frame
     
     print(prediction)
