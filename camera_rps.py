@@ -13,27 +13,25 @@ class Game:
         self.user_choice = ""   # user choice is given an empty string value
         self.user_wins = 0 # user wins is given a zero interger value
         self.computer_wins = 0 # computer wins is given a zero integer value
-        self.count = 3
-        self.replay_choice = ""
+        self.count = 3 # 
+        self.replay_choice = "" # the choice to replay the game is given an empty string
 
     def get_computer_choice(self): # defines the computer choice function, passing only self as the argument
         self.computer_choice = random.choice(list(self.move_list.values())) # chooses random values from a dictionary converted into a list
-        print(self.computer_choice)
 
     def get_user_choice(self): # defines the user choice function, passing only self as the argument
         
         model = load_model('keras_model.h5')
-        cap = cv2.VideoCapture(0)
+        cap = cv2.VideoCapture(0) # captures the webcam video frame by frame and set as cap object - 0 is the first camera
         data = np.ndarray(shape=(1, 224, 224, 3), dtype=np.float32)
-        start = time.time()
         end = time.time() + 6  
-        while end > time.time(): # loop continues for 10 seconds
+        while end > time.time(): # loop continues for 6 seconds
             ret, frame = cap.read() # reads the video from the camera frame by frame
             resized_frame = cv2.resize(frame, (224, 224), interpolation = cv2.INTER_AREA) # resizes image(input image, size, interpolation)
             image_np = np.array(resized_frame)
             normalized_image = (image_np.astype(np.float32) / 127.0) - 1 # Normalize the image
             data[0] = normalized_image
-            prediction = model.predict(data)
+            prediction = model.predict(data) # the predicted values from the model in a matrix
             cv2.putText(frame, f"{int(end - time.time())}", (100,150), cv2.FONT_HERSHEY_DUPLEX, 4, (255,0,0), 3) # prints countdown timer
             cv2.imshow('User Move', frame) # displays video in a window called User Move
             print(prediction)
@@ -41,58 +39,58 @@ class Game:
                 break
 
         if np.argmax(prediction) == 0:
-                self.user_choice = "Rock"
+                self.user_choice = "Rock" # if first prediction is highest, choice is Rock
         elif np.argmax(prediction) == 1:
-                self.user_choice = "Scissors"
+                self.user_choice = "Scissors" # if second prediction is highest, choice is Scissors
         elif np.argmax(prediction) == 2:
-                self.user_choice = "Paper" 
+                self.user_choice = "Paper" # if third prediction is highest, choice is Paper
         elif np.argmax(prediction) == 3:
-                self.user_choice = "Nothing"  
+                self.user_choice = "Nothing" # if fourth prediction is highest, choice is Nothing
         print(f"You chose {self.user_choice}.") 
              
-        cap.release()# After the loop release the cap object
-        cv2.destroyAllWindows()# Destroy all the windows
+        cap.release() # After the loop release the cap object
+        cv2.destroyAllWindows() # Destroy all the windows
     
     def get_winner(self, computer_choice, user_choice): # defines the winner function, using the previous choice functions and self as arguments
         if (user_choice == self.move_list["0"] and computer_choice == self.move_list["1"] 
         or user_choice == self.move_list["1"] and computer_choice == self.move_list["2"] 
         or user_choice == self.move_list["2"] and computer_choice == self.move_list["0"]): # condition where the user's choice beats the computer's choice
-            print("You have won!")
+            print("You won the round!")
             self.user_wins += 1 # adds 1 to user's score
         elif user_choice == computer_choice: # condition where the user's choice is equal to the computer's choice
-            print("You have drawn!")
+            print("You drew the round!")
         else: 
             self.computer_wins += 1 # adds 1 to computer's score
-            print("You have lost!")
+            print("You lost the round!")
         print(f"The score is {self.user_wins} - {self.computer_wins}.") # prints the game's score
 
 
 # %%
 game = Game() # creates the game instance using the Game class
-def replay():    
+def play(): # defines the function that plays the game   
     while True:
-        if game.user_wins < 3 and game.computer_wins < 3:
+        if game.user_wins < 3 and game.computer_wins < 3: # game runs until user or computer reaches 3 wins
             game.get_computer_choice() # calls the computer choice function
             game.get_user_choice() # calls the user choice function
             game.get_winner(game.computer_choice, game.user_choice) # calls the winner function, using the game instances' user and computer choices as arguments
         else:  
-            game.replay_choice = input("Would you like to play? Choose 'y' or 'n'.")
+            if game.user_wins == 3:    
+                print("You won the game!")
+            elif game.computer_wins == 3:
+                print("You lost the game!")
+            game.replay_choice = input("Would you like to play? Choose 'y' or 'n'.") # choice given to user to replay the game
             break  
 
-def play():
-    replay()
+def play_replay(): # defines the function used to replay the game 
+    play() # calls the play function
     while True:
-                if game.replay_choice == "y":
-                    game.user_wins = 0
+                if game.replay_choice == "y": # checks to see if the input is y (yes)
+                    game.user_wins = 0 # resets wins of both user and computer to 0
                     game.computer_wins = 0
-                    replay()
-                elif game.replay_choice == "n":
-                    print("Thanks for playing!")
+                    play() # recalls the play function
+                elif game.replay_choice == "n": # ends loop if input is n (no)
+                    print("Thanks for playing!") 
                     break
-    if game.user_wins == 3:    
-        print("You have won the game!")
-    elif game.computer_wins == 3:
-        print("You have lost the game!")
 # %%
-play()
+play_replay()
 # %%
