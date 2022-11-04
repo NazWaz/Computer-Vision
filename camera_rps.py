@@ -1,9 +1,9 @@
 # %%
 import random # imports random module
-import cv2
-from keras.models import load_model
-import numpy as np
-import time
+import cv2 # imports opencv library
+from keras.models import load_model # imports keras library using model
+import numpy as np # imports numpy module
+import time # imports time module
 
 class Game:
     def __init__(self): # intialises parameters
@@ -14,6 +14,7 @@ class Game:
         self.user_wins = 0 # user wins is given a zero interger value
         self.computer_wins = 0 # computer wins is given a zero integer value
         self.count = 3
+        self.replay_choice = ""
 
     def get_computer_choice(self): # defines the computer choice function, passing only self as the argument
         self.computer_choice = random.choice(list(self.move_list.values())) # chooses random values from a dictionary converted into a list
@@ -33,14 +34,10 @@ class Game:
             normalized_image = (image_np.astype(np.float32) / 127.0) - 1 # Normalize the image
             data[0] = normalized_image
             prediction = model.predict(data)
-           
-            cv2.putText(frame, f"{int(end - time.time())}", (100,150), cv2.FONT_HERSHEY_DUPLEX, 4, (255,0,0), 3) 
+            cv2.putText(frame, f"{int(end - time.time())}", (100,150), cv2.FONT_HERSHEY_DUPLEX, 4, (255,0,0), 3) # prints countdown timer
             cv2.imshow('User Move', frame) # displays video in a window called User Move
-              
-            
-            # Press q to close the window
             print(prediction)
-            if cv2.waitKey(1) & 0xFF == ord('q'):
+            if cv2.waitKey(1) & 0xFF == ord('q'): # Press q to close the window
                 break
 
         if np.argmax(prediction) == 0:
@@ -68,21 +65,34 @@ class Game:
             self.computer_wins += 1 # adds 1 to computer's score
             print("You have lost!")
         print(f"The score is {self.user_wins} - {self.computer_wins}.") # prints the game's score
+
+
 # %%
-def play():
-    game = Game() # creates the game instance using the Game class
+game = Game() # creates the game instance using the Game class
+def replay():    
     while True:
         if game.user_wins < 3 and game.computer_wins < 3:
             game.get_computer_choice() # calls the computer choice function
             game.get_user_choice() # calls the user choice function
             game.get_winner(game.computer_choice, game.user_choice) # calls the winner function, using the game instances' user and computer choices as arguments
-        else:    
-            break
+        else:  
+            game.replay_choice = input("Would you like to play? Choose 'y' or 'n'.")
+            break  
+
+def play():
+    replay()
+    while True:
+                if game.replay_choice == "y":
+                    game.user_wins = 0
+                    game.computer_wins = 0
+                    replay()
+                elif game.replay_choice == "n":
+                    print("Thanks for playing!")
+                    break
     if game.user_wins == 3:    
         print("You have won the game!")
     elif game.computer_wins == 3:
         print("You have lost the game!")
-
 # %%
 play()
 # %%
