@@ -1,25 +1,56 @@
 # %%
-import random # imports random module
-import cv2 # imports opencv library
-from keras.models import load_model # imports keras library using model
-import numpy as np # imports numpy module
-import time # imports time module
+import random 
+import cv2 
+from keras.models import load_model 
+import numpy as np 
+import time 
 
 class Game:
-    def __init__(self): # intialises parameters
+    '''
+        A Rock-Paper-Scissors game 
 
-        self.move_list = {"0": "Rock", "1": "Scissors", "2": "Paper"} # move list is given as an argument as a dictionary later
-        self.computer_choice = "" # computer choice is given an empty string value
-        self.user_choice = ""   # user choice is given an empty string value
-        self.user_wins = 0 # user wins is given a zero interger value
-        self.computer_wins = 0 # computer wins is given a zero integer value
-        self.count = 3 # 
-        self.replay_choice = "" # the choice to replay the game is given an empty string
+        Attributes:
+        ----------
+        move_list: dictionary
+            A list of possible moves in the game.
+        user_choice: str
+            The user's move.
+        user_wins: int
+            The number of round wins for the user.
+        computer_wins: int
+            The number of round wins for the computer.
 
-    def get_computer_choice(self): # defines the computer choice function, passing only self as the argument
-        self.computer_choice = random.choice(list(self.move_list.values())) # chooses random values from a dictionary converted into a list
+        Methods:
+        -------
+        get_computer_choice
+            Selects the move made by the computer.
+        get_user_choice
+            Predicts the user's move using a camera and trained model.
+        get_winner
+            Checks the result of the round between the computer and the user.
+        '''
+    def __init__(self):
 
-    def get_user_choice(self): # defines the user choice function, passing only self as the argument
+        self.move_list = {"0": "Rock", "1": "Scissors", "2": "Paper"}
+        self.user_choice = ""   
+        self.user_wins = 0 
+        self.computer_wins = 0 
+
+    def get_computer_choice(self):
+        '''
+        Selects the move made by the computer randomly from a dictionary of viable moves and they can be:
+        - rock
+        - paper
+        - scissors
+        '''
+        computer_choice = random.choice(list(self.move_list.values())) 
+
+    def get_user_choice(self): 
+        '''
+        Predicts the user's move using a previously trained model
+        
+        '''
+        # defines the user choice function, passing only self as the argument
         
         model = load_model('keras_model.h5')
         cap = cv2.VideoCapture(0) # captures the webcam video frame by frame and set as cap object - 0 is the first camera
@@ -51,18 +82,31 @@ class Game:
         cap.release() # After the loop release the cap object
         cv2.destroyAllWindows() # Destroy all the windows
     
-    def get_winner(self, computer_choice, user_choice): # defines the winner function, using the previous choice functions and self as arguments
-        if (user_choice == self.move_list["0"] and computer_choice == self.move_list["1"] 
-        or user_choice == self.move_list["1"] and computer_choice == self.move_list["2"] 
-        or user_choice == self.move_list["2"] and computer_choice == self.move_list["0"]): # condition where the user's choice beats the computer's choice
+    def get_winner(self, computer_choice): 
+        '''
+        Checks the result of the round with 3 different checks:
+        1. If the user's move beats the computer's move
+        - this means the user wins the round and gets 1 point added to their round wins (user_wins)
+        2. If the user's move is identical to the computer's move
+        - this means the round is a draw
+        3. If the computer's move beats the user's move
+        - this means the computer wins the round and gets 1 point added to their round wins (computer_wins)
+        Paramters:
+        ---------
+        computer_choice: str
+            The computer's move.
+        '''
+        if (self.user_choice == self.move_list["0"] and computer_choice == self.move_list["1"] 
+        or self.user_choice == self.move_list["1"] and computer_choice == self.move_list["2"] 
+        or self.user_choice == self.move_list["2"] and computer_choice == self.move_list["0"]): 
             print("You won the round!")
-            self.user_wins += 1 # adds 1 to user's score
-        elif user_choice == computer_choice: # condition where the user's choice is equal to the computer's choice
+            self.user_wins += 1 
+        elif self.user_choice == computer_choice: 
             print("You drew the round!")
         else: 
-            self.computer_wins += 1 # adds 1 to computer's score
+            self.computer_wins += 1 
             print("You lost the round!")
-        print(f"The score is {self.user_wins} - {self.computer_wins}.") # prints the game's score
+        print(f"The score is {self.user_wins} - {self.computer_wins}.") 
 
 
 # %%
@@ -84,13 +128,13 @@ def play(): # defines the function that plays the game
 def play_replay(): # defines the function used to replay the game 
     play() # calls the play function
     while True:
-                if game.replay_choice == "y": # checks to see if the input is y (yes)
-                    game.user_wins = 0 # resets wins of both user and computer to 0
-                    game.computer_wins = 0
-                    play() # recalls the play function
-                elif game.replay_choice == "n": # ends loop if input is n (no)
-                    print("Thanks for playing!") 
-                    break
+        if game.replay_choice == "y": # checks to see if the input is y (yes)
+            game.user_wins = 0 # resets wins of both user and computer to 0
+            game.computer_wins = 0
+            play() # recalls the play function
+        elif game.replay_choice == "n": # ends loop if input is n (no)
+            print("Thanks for playing!") 
+            break
 # %%
 play_replay()
 # %%
