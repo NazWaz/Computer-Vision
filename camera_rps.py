@@ -33,7 +33,7 @@ class Game:
     def __init__(self):
 
         self.move_list = {"0": "Rock", "1": "Scissors", "2": "Paper"}
-        self.user_choice = ""   
+        self.user_choice = ""  
         self.user_wins = 0 
         self.computer_wins = 0 
 
@@ -101,8 +101,9 @@ class Game:
         - this means the round is a draw
         3. If the computer's move beats the user's move
         - this means the computer wins the round and gets 1 point added to their round wins (computer_wins)
-        Paramters:
-        ---------
+        
+        Parameters:
+        ----------
         computer_choice: str
             The computer's move.
         '''
@@ -162,3 +163,5 @@ def play_replay():
             break
 # %%
 play_replay()
+
+# %%
