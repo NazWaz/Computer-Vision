@@ -1,4 +1,3 @@
-# %%
 import random 
 import cv2 
 from keras.models import load_model 
@@ -31,6 +30,9 @@ class Game:
         Checks the result of the round between the computer and the user.
     '''
     def __init__(self):
+        '''
+        Constructs all the neccessary attributes for the game object.
+        '''
 
         self.move_list = {"0": "Rock", "1": "Scissors", "2": "Paper"}
         self.user_choice = ""  
@@ -44,6 +46,7 @@ class Game:
         - paper
         - scissors
         '''
+
         computer_choice = random.choice(list(self.move_list.values())) 
         return computer_choice
 
@@ -58,6 +61,7 @@ class Game:
         3. The move is paper if the third prediction value is highest
         4. The move is nothing if the fourth prediction value is highest
         '''
+
         model = load_model('keras_model.h5')
         cap = cv2.VideoCapture(0) 
         data = np.ndarray(shape=(1, 224, 224, 3), dtype=np.float32)
@@ -103,6 +107,7 @@ class Game:
         3. If the computer's move beats the user's move
         - this means the computer wins the round and gets 1 point added to their round wins (computer_wins)
         '''
+
         computer_choice = self.get_computer_choice()
         if (self.user_choice == self.move_list["0"] and computer_choice == self.move_list["1"] 
         or self.user_choice == self.move_list["1"] and computer_choice == self.move_list["2"] 
@@ -116,7 +121,6 @@ class Game:
             print("You lost the round!")
         print(f"The score is {self.user_wins} - {self.computer_wins}.") 
 
-# %%
 game = Game() 
 
 def play():
@@ -127,6 +131,7 @@ def play():
     2. The user or computer reaches 3 wins
     - the game ends and the user is given a message to choose whether to replay the game 
     ''' 
+
     while True:
         if game.user_wins < 3 and game.computer_wins < 3:
             game.get_user_choice() 
@@ -148,6 +153,7 @@ def play_replay():
     2. If the user selects "n" (no)
     - the game ends 
     '''
+
     play() 
     while True:
         if game.replay_choice == "y": 
@@ -157,7 +163,5 @@ def play_replay():
         elif game.replay_choice == "n": 
             print("Thanks for playing!") 
             break
-# %%
-play_replay()
 
-# %%
+play_replay()

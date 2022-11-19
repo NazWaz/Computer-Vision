@@ -1,4 +1,3 @@
-#%%
 import random 
 
 class Game:
@@ -6,13 +5,10 @@ class Game:
     A Rock-Paper-Scissors game between the computer and user, played using a camera to detect the user's move.
     The game is replayable and lasts until the user or computer reaches 3 wins.
 
-    Parameters:
+    Attributes:
     ----------
     move_list: dictionary
         A list of possible moves in the game.
-
-    Attributes:
-    ----------
     user_choice: str
         The user's move.
 
@@ -25,11 +21,19 @@ class Game:
     get_winner
         Checks the result of the round between the computer and the user.
     '''
+
     def __init__(self, move_list):
+        '''
+        Constructs all the neccessary attributes for the game object.
+
+        Parameters:
+        ----------
+        move_list: dictionary
+            A list of possible moves in the game.
+        '''
 
         self.move_list = move_list 
-        self.user_choice = ""   
-        self.computer_choice = ""
+        self.user_choice = "" 
 
     def get_computer_choice(self):
         '''
@@ -38,16 +42,18 @@ class Game:
         - paper
         - scissors
         '''
+
         computer_choice = random.choice(list(self.move_list.values())) 
         return computer_choice
 
     def get_user_choice(self): 
         '''
         Asks the user to input their choice of move between:
-        - rock
-        - paper
-        - scissors
+        - Rock
+        - Paper
+        - Scissors
         '''
+
         while True: 
             self.user_choice = input("Enter 'Rock', 'Paper' or 'Scissors'.") 
             break 
@@ -62,6 +68,7 @@ class Game:
         3. If the computer's move beats the user's move
         - this means the computer wins the round and gets 1 point added to their round wins (computer_wins)
         '''
+
         computer_choice = self.get_computer_choice()
         if (self.user_choice == self.move_list["0"] and computer_choice == self.move_list["1"] 
         or self.user_choice == self.move_list["1"] and computer_choice == self.move_list["2"] 
@@ -71,16 +78,16 @@ class Game:
             print("You have drawn!")
         else: 
             print("You have lost!")
-# %%
+
 def play():
     '''
-    Plays the game by calling the get_computer_choice, get_user_choice and get_winner methods.
+    Plays the game by calling the get_user_choice and get_winner methods.
     '''
+
     game = Game({"0": "Rock", "1": "Scissors", "2": "Paper"}) 
     while True:
         game.get_user_choice() 
         game.get_winner() 
         break
-# %%
+
 play()
-# %%
