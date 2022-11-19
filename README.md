@@ -112,7 +112,7 @@ The fifth milestone was to set up the game again but this time using the camera 
 
 - This time if the user wins, `self.user_wins` was increased by 1 but if the computer wins, `self.computer_wins` was increased by 1 instead. The score at this point in the game was then printed out to the user.
 
- ![play](../../../C:/AiCore/Computer%20Vision/Documentation/5/5.png)
+![play](../../../C:/AiCore/Computer%20Vision/Documentation/5/5.png)
 
 - The `play()` function set up a regular game but had conditions to run the game. 
 
