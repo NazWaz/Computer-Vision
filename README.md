@@ -48,13 +48,15 @@ The fourth milestone was to actually create the Rock-Paper-Scissors game. This v
 
 - A game class was set up with the attributes defined as `self.move_list` (the move list of Rock, Paper or Scissors in the game), `self.computer_choice` (the choice selected by the computer)  and `self.user_choice` (the choice selected by the user). Both choices are given empty string values, while the move list is a dictionary value passed through the class as an argument later. 
 
+![](Documentation/4/2.png)
+
 - The random module is imported before the class is created and later used in the `get_computer_choice(self)` method to generate a random computer choice. Since the move list was a dictionary, it had to be converted into a list first using `list(self.move_list.values())` where a list is made of all of the values. 
 
-![](Documentation/4/2.png)
+![](Documentation/4/3.png)
 
 - The next method was for the user choice `get_user_choice(self)` and used a `while True` loop for a continuous loop asking for the user's input of either Rock, Paper or Scissors. 
 
-![](Documentation/4/3.png)
+![](Documentation/4/4.png)
 
 - The third method `get_winner(self, computer_choice, user_choice)` was used to decide the winner of the round, with the computer and user choices also passed through as arguments. Using an `if/else` and `elif` statements, various conditions and outcomes were outlined. 
 
@@ -64,10 +66,36 @@ The fourth milestone was to actually create the Rock-Paper-Scissors game. This v
 
 - The `else` condition is the outcome where the user neither wins or draws i.e. the user loses to the computer.
 
-![](Documentation/4/4.png)
+![](Documentation/4/5.png)
 
-- After the class was set up, the methods could be used to create a `play` function to play the game. The `game` instance is created using the `Game` class passing the move list dictionary as an argument. Then a `while True` loop is used to create the continuous loop for the game and all three functions `game.get_computer_choice()`, `game.get_user_choice()` and `game.get_winner(game.computer_choice, game.user_choice)`. The first 2 functions need no argument while the final function requires both the user and computer choices, in the game instance.
+- After the class was set up, the methods could be used to create a `play` function to play the game. The `game` instance is created using the `Game` class passing the move list dictionary as an argument. Then a `while True` loop is used to create the continuous loop for the game and the functions `game.get_user_choice()` and `game.get_winner(game.computer_choice, game.user_choice)`.
 
 - The play function is run using `play()` to start the game.
 
  ## Milestone 5
+
+ The fifth milestone...
+
+ ![class](../../../C:/AiCore/Computer%20Vision/Documentation/5/1.png)
+
+ - 
+
+ ![get_computer_choice](../../../C:/AiCore/Computer%20Vision/Documentation/5/2.png)
+ 
+-
+
+ ![get_user_choice](../../../C:/AiCore/Computer%20Vision/Documentation/5/3.png)
+
+-
+
+ ![get_winner](../../../C:/AiCore/Computer%20Vision/Documentation/5/4.png)
+
+-
+
+ ![play](../../../C:/AiCore/Computer%20Vision/Documentation/5/5.png)
+
+-
+
+ ![play_replay](../../../C:/AiCore/Computer%20Vision/Documentation/5/6.png)
+
+ -
